@@ -1,5 +1,8 @@
 class Playboy
-  
+
+  attr_accessor  :status
+  attr_reader :nationality, :conquests
+
   def initialize(name, nationality)
     @conquests = []
     @name, @nationality = name, nationality   
