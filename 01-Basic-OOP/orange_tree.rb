@@ -1,63 +1,62 @@
 class OrangeTree
-  
-  attr_accessor :age, :height, :orange
+  #attr_accessor :height, :age, :oranges
+  # no need here => not called, we have our own fancy methods
 
-  def initialize
-    @age = 0
+  def initialize # constructor
     @height = 0
-    @orange = 0
+    @oranges = 0
+    @age = 0
+    @alive = true
   end
   
   def measure_height
-    if @age < 30
-      return "#{@height.round(2)}m"
+    if @alive == false
+     puts "Sorry your tree won't grow anymore, it's dead"
     else 
-      return "Your old dear tree is quite dead."
+      puts "your tree is #{@height} m tall"
     end
   end
   
   def count_the_oranges
-    if @age < 30
-      return "#{@orange} oranges."
+    if @age < 10
+      puts "Patience, I'm only a baby tree!"
+    elsif @alive == false
+      puts "your tree is dead, there will be no more oranges"
     else 
-      return "Your old dear tree is quite dead."
+      puts "The tree produced #{@oranges} oranges."
     end
-  end
+  end 
   
   def pick_an_orange
-    if @age >= 30
-      return "Oops... A dead tree is a dead tree dude."
-    elsif @age < 10
-      return "Be patient, I'm only a child!" 
-    elsif @orange > 1
-      @orange -= 1
-      return "Juiccccyyyyyy!!"
-    else 
-      return "Too bad... You've eaten all the oranges..." 
+    if @alive  && @oranges >= 1
+       @oranges -= 1
+    puts "You now have #{@oranges}"
+    else @alive == false
+    puts "Go back to ur mom"
     end
   end
   
   def one_year_passes
+    return "i'm dead birch!" if !@alive
+
     @age += 1
     @height += 0.4
-    if @age > 30 
-      return "Your old dear tree is quite dead."
+    death_luck = rand(1..10)
+    
+    if @age > 30 && death_luck > 6
+      @alive = false
+      message = "i'm dead birch!"
     elsif @age >= 10
-      @orange = @age * 6
+       @oranges += @age * 6 
+       message = "you tree is young and fruitfull.. #{@oranges} oranges this year"
+    elsif @age < 10 and @alive
+       message = "you tree is still a baby.. Wait for a while"
     end
-    return "This year your tree grew to #{@height.round(2)}m tall and produced #{@orange} oranges."
+   
+    return message
   end
 
 end
 
-tree = OrangeTree.new
-35.times do
-  puts "\n"
-  puts "***"
-  puts tree.one_year_passes
-  puts tree.age 
-  puts tree.pick_an_orange
-  puts tree.count_the_oranges
-  puts tree.measure_height
-end
-puts tree.one_year_passes
+our_tree = OrangeTree.new
+50.times() { puts our_tree.one_year_passes }
