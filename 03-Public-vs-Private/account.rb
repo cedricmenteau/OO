@@ -1,3 +1,5 @@
+require_relative "Transaction" #chemin relatif par rapport au fichier dans lequel nous travaillons
+
 # This is how you define your own custom exception classes
 class DepositError < StandardError
 end
@@ -10,6 +12,7 @@ class BankAccount
   # - you can print partial account infos
   # - you can print transactions only with a password
   # - you can withdraw or deposit money
+  attr_reader :name, :position
   
   MIN_DEPOSIT =  100
   
@@ -24,21 +27,38 @@ class BankAccount
   end
     
   def withdraw(amount)
+    add_transaction(-amount)
   end
   
   def deposit(amount)
+    add_transaction(+amount)
   end
   
   def transactions_history(args = {})
     # Should print transactions, BUT NOT return the transaction array !
+    if args.empty?
+      puts "no password given"
+      return nil
+    elsif args[:password] == @password
+      puts @transactions
+      return @transactions.dup
+    else 
+      puts "wrong password"
+      return nil 
+    end
   end
   
   def iban
     # Partial getter (should hide the middle of the IBAN like FR14**************606)
+    res = @iban
+    res[3..(@iban.length-3)] =  "***********"
+    res
+    #"#{@iban[0..3]}" + "**************************" + "#{@iban[(@iban.length-3)..(@iban.length-1)]}"
   end
   
   def to_s
     # Method used when printing account object as string (also used for string interpolation)
+    "Owner: #{@name} \nIBAN: #{iban} \nPosition: #{@position}"
   end
           
   private  
@@ -47,6 +67,8 @@ class BankAccount
     # Main account logic
     # Should add the amount in the transactions array
     # Should update the current position
+    @transactions << Transaction.new(amount) #appelle de la class transaction (cf. transaction.rb)
+    @position += amount
   end
     
 end
