@@ -6,7 +6,7 @@ module DemoModule
 
   class DemoClass  
 
-    puts "???. self from class definition : #{self.inspect} | #{self.class}"
+    puts "1. self from class definition : #{self.inspect} | #{self.class}"
 
     def introduce
       @whatever = "whatever text"
